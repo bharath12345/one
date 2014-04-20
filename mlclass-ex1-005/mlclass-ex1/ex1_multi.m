@@ -83,15 +83,23 @@ fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
 alpha = 0.01;
+beta = 0.03; % higher learning rate per the assignment spec
+gamma = 0.1; % higher learning rate per the assignment spec
 num_iters = 400;
 
 % Init Theta and Run Gradient Descent 
-theta = zeros(3, 1);
-[theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+myzeros = theta = zeros(3, 1);
+[theta, J1_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+[theta, J2_history] = gradientDescentMulti(X, y, myzeros, beta, num_iters);
+[theta, J3_history] = gradientDescentMulti(X, y, myzeros, gamma, num_iters);
 
 % Plot the convergence graph
 figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
+plot(1:numel(J1_history), J1_history, '-b', 'LineWidth', 2);
+hold on;
+plot(1:numel(J2_history), J2_history, '-g', 'LineWidth', 2);
+plot(1:numel(J3_history), J3_history, '-m', 'LineWidth', 2);
+legend('learning = 0.01', 'learning = 0.03','learning = 0.1');
 xlabel('Number of iterations');
 ylabel('Cost J');
 
@@ -104,7 +112,8 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = [1 (([1650 3] - mu) ./ sigma)] * theta;
+
+% price = [1 (([1650 3] - mu) ./ sigma)] * theta;
 
 size = (1650 - mu(1)) / sigma(1);
 br = (3 - mu(2)) / sigma(2);
